@@ -9,8 +9,8 @@
 #include "parse_metafile.h"
 #include "bitfield.h"
 
-Bitmap      *bitmap = NULL;         // Ö¸ÏòÎ»Í¼
-int         download_piece_num = 0; // µ±Ç°ÒÑÏÂÔØµÄpieceÊı 
+Bitmap      *bitmap = NULL;         // æŒ‡å‘ä½å›¾
+int         download_piece_num = 0; // å½“å‰å·²ä¸‹è½½çš„pieceæ•° 
 
 void show_shared_vars()
 {
@@ -24,8 +24,8 @@ void show_shared_vars()
 
 }
 
-// Èç¹û´æÔÚÒ»¸öÎ»Í¼ÎÄ¼ş,Ôò¶ÁÎ»Í¼ÎÄ¼ş²¢°Ñ»ñÈ¡µÄÄÚÈİ±£´æµ½bitmap
-// Èç´ËÒ»À´,¾Í¿ÉÒÔÊµÏÖ¶ÏµãĞø´«,¼´ÉÏ´ÎÏÂÔØµÄÄÚÈİ²»ÖÁÓÚ¶ªÊ§
+// å¦‚æœå­˜åœ¨ä¸€ä¸ªä½å›¾æ–‡ä»¶,åˆ™è¯»ä½å›¾æ–‡ä»¶å¹¶æŠŠè·å–çš„å†…å®¹ä¿å­˜åˆ°bitmap
+// å¦‚æ­¤ä¸€æ¥,å°±å¯ä»¥å®ç°æ–­ç‚¹ç»­ä¼ ,å³ä¸Šæ¬¡ä¸‹è½½çš„å†…å®¹ä¸è‡³äºä¸¢å¤±
 int create_bitfield()
 {
     bitmap = (Bitmap *)malloc(sizeof(Bitmap));
@@ -34,7 +34,7 @@ int create_bitfield()
         return -1;
     }
 
-	/*// pieces_length³ıÒÔ20¼´Îª×ÜµÄpieceÊı*/
+	/*// pieces_lengthé™¤ä»¥20å³ä¸ºæ€»çš„pieceæ•°*/
     bitmap->valid_length = pieces_length / 20;
     bitmap->bitfield_length = pieces_length / 20 / 8;
     if( (pieces_length/20) % 8 != 0 )  bitmap->bitfield_length++;
@@ -51,14 +51,14 @@ int create_bitfield()
 	
     int  i;
     FILE *fp = fopen(bitmapfile,"rb");
-    if(fp == NULL) {  // Èô´ò¿ªÎÄ¼şÊ§°Ü,ËµÃ÷¿ªÊ¼µÄÊÇÒ»¸öÈ«ĞÂµÄÏÂÔØ
+    if(fp == NULL) {  // è‹¥æ‰“å¼€æ–‡ä»¶å¤±è´¥,è¯´æ˜å¼€å§‹çš„æ˜¯ä¸€ä¸ªå…¨æ–°çš„ä¸‹è½½
         memset(bitmap->bitfield, 0, bitmap->bitfield_length);
     } else {
         fseek(fp,0,SEEK_SET);
         for(i = 0; i < bitmap->bitfield_length; i++)
             (bitmap->bitfield)[i] = fgetc(fp);
         fclose(fp); 
-        // ¸ødownload_piece_num¸³ĞÂµÄ³õÖµ
+        // ç»™download_piece_numèµ‹æ–°çš„åˆå€¼
         download_piece_num = get_download_piece_num();
     }
 	
@@ -118,8 +118,10 @@ int all_set(Bitmap *bitmap)
 
 void release_memory_in_bitfield()
 {
-	if(bitmap->bitfield != NULL) free(bitmap->bitfield);
-	if(bitmap != NULL)  free(bitmap);
+	if(bitmap != NULL) {
+		if(bitmap->bitfield != NULL) free(bitmap->bitfield);
+		free(bitmap);
+	}
 }
 
 int print_bitfield(Bitmap *bitmap)
@@ -176,7 +178,7 @@ int is_interested(Bitmap *dst,Bitmap *src)
 	j  = dst->valid_length % 8;
 	c1 = dst->bitfield[dst->bitfield_length-1];
 	c2 = src->bitfield[src->bitfield_length-1];
-	for(i = 0; i < j; i++) { //±È½Ï×îºóÒ»¸ö×Ö½Ú 
+	for(i = 0; i < j; i++) { //æ¯”è¾ƒæœ€åä¸€ä¸ªå­—èŠ‚ 
 		if( (c1&const_char[i])>0 && (c2&const_char[i])==0 )
 			return 1;
 	}
@@ -184,8 +186,8 @@ int is_interested(Bitmap *dst,Bitmap *src)
 	return 0;
 }
 /*  
-    ÒÔÉÏº¯ÊıµÄ¹¦ÄÜ²âÊÔ´úÂëÈçÏÂ£º
-	²âÊÔÊ±¿ÉÒÔ½»»»map1.bitfieldºÍmap2.bitfieldµÄÖµ»ò¸³ÆäËûÖµ
+    ä»¥ä¸Šå‡½æ•°çš„åŠŸèƒ½æµ‹è¯•ä»£ç å¦‚ä¸‹ï¼š
+	æµ‹è¯•æ—¶å¯ä»¥äº¤æ¢map1.bitfieldå’Œmap2.bitfieldçš„å€¼æˆ–èµ‹å…¶ä»–å€¼
 
 	Bitmap map1, map2;
 	unsigned char bf1[2] = { 0xa0, 0xa0 };
@@ -202,7 +204,7 @@ int is_interested(Bitmap *dst,Bitmap *src)
 	printf("%d\n",ret);
  */
 
-// »ñÈ¡µ±Ç°ÒÑÏÂÔØµ½µÄ×ÜµÄpieceÊı
+// è·å–å½“å‰å·²ä¸‹è½½åˆ°çš„æ€»çš„pieceæ•°
 int get_download_piece_num()
 {
     unsigned char const_char[8] = { 0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01};
@@ -219,8 +221,8 @@ int get_download_piece_num()
         }
     }
 
-    unsigned char c = (bitmap->bitfield)[i]; // c´æ·ÅÎ»Í¼×îºóÒ»¸ö×Ö½Ú
-    j = bitmap->valid_length % 8;            // jÊÇÎ»Í¼×îºóÒ»¸ö×Ö½ÚµÄÓĞĞ§Î»Êı
+    unsigned char c = (bitmap->bitfield)[i]; // cå­˜æ”¾ä½å›¾æœ€åä¸€ä¸ªå­—èŠ‚
+    j = bitmap->valid_length % 8;            // jæ˜¯ä½å›¾æœ€åä¸€ä¸ªå­—èŠ‚çš„æœ‰æ•ˆä½æ•°
     for(i = 0; i < j; i++) {
         if( (c & const_char[i]) !=0 ) download_piece_num++;
     }

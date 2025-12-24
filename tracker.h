@@ -9,36 +9,36 @@ typedef struct _Peer_addr {
 	struct _Peer_addr *next;
 } Peer_addr;
 
-//  ÓÃÓÚ½«info_hashºÍpeer_id×ª»»Îªhttp±àÂë¸ñÊ½
-//  httpĞ­Òé¹æ¶¨,´«ÊäÊı¾İÖĞµÄ·ÇÊı×ÖºÍ·Ç×ÖÄ¸¶¼Òª½øĞĞ±àÂë×ª»»
+//  ä½ å¥½
+//  httpĞ­ï¿½ï¿½æ¶¨,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ·ï¿½ï¿½ï¿½ï¿½ÖºÍ·ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½Òªï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ï¿½×ªï¿½ï¿½
 int http_encode(unsigned char *in,int len1,char *out,int len2);
-//  ´ÓÖÖ×ÓÎÄ¼şÖĞ´æ´¢µÄtrackerµÄURL»ñÈ¡trackerÖ÷»úÃû
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ğ´æ´¢ï¿½ï¿½trackerï¿½ï¿½URLï¿½ï¿½È¡trackerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int get_tracker_name(Announce_list *node,char *name,int len);
-//  ´ÓÖÖ×ÓÎÄ¼şÖĞ´æ´¢µÄtrackerµÄURL»ñÈ¡tracker¶Ë¿ÚºÅ
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ğ´æ´¢ï¿½ï¿½trackerï¿½ï¿½URLï¿½ï¿½È¡trackerï¿½Ë¿Úºï¿½
 int get_tracker_port(Announce_list *node,unsigned short *port);
 
-//  ´´½¨·¢ËÍµ½tracker·şÎñÆ÷µÄÇëÇóĞÅÏ¢
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½trackerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 int create_request(char *request, int len,Announce_list *node,
 				   unsigned short port,long long down,long long up,
 				   long long left,int numwant);
 
-//  ×¼±¸Á¬½Ótracker
+//  ×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tracker
 int prepare_connect_tracker(int *max_sockfd);
-//  ×¼±¸Á¬½Ópeer
+//  ×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½peer
 int prepare_connect_peer(int *max_sockfd);
 
-//  »ñÈ¡tracker·µ»ØµÄÏûÏ¢µÄÀàĞÍ
-//  Ò»ÖÖÀàĞÍÎª"5:peers"¹Ø¼ü×ÖÖ®ºóÊÇÒ»¸ö×Ö·û´®,ÁíÒ»ÖÖÊÇÒ»¸öÁĞ±í
+//  ï¿½ï¿½È¡trackerï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//  Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª"5:peers"ï¿½Ø¼ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½,ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ğ±ï¿½
 int get_response_type(char *buffer,int len,int *total_length);
-//  ½âÎöµÚÒ»ÖÖtracker·µ»ØµÄÏûÏ¢
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½trackerï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ï¢
 int parse_tracker_response1(char *buffer,int ret,char *redirection,int len);
-//  ½âÎöµÚ¶şÖÖtracker·µ»ØµÄÏûÏ¢
+//  ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½trackerï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ï¢
 int parse_tracker_response2(char *buffer,int ret);
-//  ½«ÓëÖ®½¨Á¢Á¬½ÓµÄpeer¼ÓÈëµ½peerÁĞ±íÖĞ
+//  ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½peerï¿½ï¿½ï¿½ëµ½peerï¿½Ğ±ï¿½ï¿½ï¿½
 int add_peer_node_to_peerlist(int *sock,struct sockaddr_in saptr);
 
 void free_peer_addr_head();
-//  ÊÍ·Å±¾ÎÄ¼şº¯ÊıÖĞ¶¯Ì¬·ÖÅäµÄÄÚ´æÒÔ·ÀÖ¹ÄÚ´æĞ¹Â©
+//  ï¿½Í·Å±ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½Ô·ï¿½Ö¹ï¿½Ú´ï¿½Ğ¹Â©
 void release_memory_in_tracker();
 
 #endif
